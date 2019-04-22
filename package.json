@@ -1,0 +1,45 @@
+{
+  "name": "minifly",
+  "version": "1.0.0",
+  "description": "🗜️ Minify different types of files easily",
+  "main": "index.js",
+  "bin": {
+    "minifly": "index.js"
+  },
+  "scripts": {
+    "test": "xo"
+  },
+  "keywords": [
+    "minifly",
+    "minify",
+    "minifier",
+    "html",
+    "css",
+    "js",
+    "javascript",
+    "tenser",
+    "clean-css",
+    "htmlmin",
+    "fast",
+    "globby"
+  ],
+  "author": "Antoni Kepinski <a@kepinski.me> (https://kepinski.me)",
+	"repository": "https://github.com/xxczaki/minifly",
+	"bugs": {
+		"url": "https://github.com/xxczaki/minifly/issues"
+	},
+	"homepage": "https://github.com/xxczaki/minifly",
+  "license": "MIT",
+  "dependencies": {
+    "clean-css": "^4.2.1",
+    "globby": "^9.2.0",
+    "html-minifier": "^4.0.0",
+    "meow": "^5.0.0",
+    "ora": "^3.4.0",
+    "terser": "^3.17.0",
+    "upath": "^1.1.2"
+  },
+  "devDependencies": {
+    "xo": "*"
+  }
+}

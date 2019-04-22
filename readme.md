@@ -1,0 +1,53 @@
+# Minifly 🗜️
+
+> Minify different types of files easily
+
+[![Build Status](https://travis-ci.org/xxczaki/minifly.svg?branch=master)](https://travis-ci.org/xxczaki/minifly) 
+[![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/xojs/xo)
+
+# Highlights
+
+- Zero-config
+- Fast and easy to use
+- Uses async/await
+- Minifies files concurrently
+- Single source file (containing ~120 lines of code)
+- Supports [multiple file types](#supported-files)
+
+# Install
+
+```bash
+npm install --global minifly
+```
+You can also use `npx`:
+```bash
+npx minifly
+```
+
+# Usage
+
+```bash
+Usage
+    $ minifly <options>
+ 
+Options
+    --ignore, -i  Ignore specific files or directories
+ 
+Examples
+    $ minifly
+	$ minifly --ignore 'index.js,dist/*.css'
+```
+
+## Supported files
+
+|      Type     |   Minifier    |
+| ------------- | ------------- |
+| HTML (*.html) | [html-minifier](https://github.com/kangax/html-minifier)  |
+| CSS (*.css)   | [clean-css](https://github.com/jakubpawlowicz/clean-css)  |
+| JavaScript (*.js)   | [terser](https://github.com/terser-js/terser)  |
+
+More file types will be supported soon :unicorn:
+
+## License
+
+MIT
