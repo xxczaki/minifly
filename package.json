@@ -17,11 +17,12 @@
     "css",
     "js",
     "javascript",
-    "tenser",
+    "terser",
     "clean-css",
-    "htmlmin",
+    "html-minifier",
     "fast",
-    "globby"
+    "globby",
+    "concurrently"
   ],
   "author": "Antoni Kepinski <a@kepinski.me> (https://kepinski.me)",
 	"repository": "https://github.com/xxczaki/minifly",
