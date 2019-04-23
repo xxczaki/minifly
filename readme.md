@@ -11,7 +11,6 @@
 - Fast and easy to use
 - Uses async/await
 - Minifies files concurrently
-- Single source file (containing ~120 lines of code)
 - Supports [multiple file types](#supported-files)
 
 # Install
@@ -45,6 +44,9 @@ Examples
 | HTML (*.html) | [html-minifier](https://github.com/kangax/html-minifier)  |
 | CSS (*.css)   | [clean-css](https://github.com/jakubpawlowicz/clean-css)  |
 | JavaScript (*.js)   | [terser](https://github.com/terser-js/terser)  |
+| JPG (*.jpg)   | [imagemin-mozjpeg](https://github.com/imagemin/imagemin-mozjpeg)  |
+| PNG (*.png)   | [imagemin-pngquant](https://github.com/imagemin/imagemin-pngquant)  |
+| SVG (*.svg)   | [imagemin-svgo](https://github.com/imagemin/imagemin-svgo)  |
 
 More file types will be supported soon :unicorn:
 

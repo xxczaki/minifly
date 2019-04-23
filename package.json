@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "🗜️ Minify different types of files easily",
   "main": "index.js",
+  "files": [
+    "index.js"
+  ],
   "bin": {
     "minifly": "index.js"
   },
@@ -17,26 +20,38 @@
     "css",
     "js",
     "javascript",
+    "images",
+    "jpg",
+    "png",
+    "svg",
     "terser",
     "clean-css",
     "html-minifier",
+    "imagemin",
     "fast",
     "globby",
     "concurrently"
   ],
   "author": "Antoni Kepinski <a@kepinski.me> (https://kepinski.me)",
-	"repository": "https://github.com/xxczaki/minifly",
-	"bugs": {
-		"url": "https://github.com/xxczaki/minifly/issues"
-	},
-	"homepage": "https://github.com/xxczaki/minifly",
+  "repository": "https://github.com/xxczaki/minifly",
+  "bugs": {
+    "url": "https://github.com/xxczaki/minifly/issues"
+  },
+  "homepage": "https://github.com/xxczaki/minifly",
   "license": "MIT",
   "dependencies": {
     "clean-css": "^4.2.1",
     "globby": "^9.2.0",
+    "has-ext": "^1.0.1",
     "html-minifier": "^4.0.0",
+    "imagemin": "^6.1.0",
+    "imagemin-mozjpeg": "^8.0.0",
+    "imagemin-pngquant": "^7.0.0",
+    "imagemin-svgo": "^7.0.0",
+    "make-dir": "^3.0.0",
     "meow": "^5.0.0",
     "ora": "^3.4.0",
+    "p-all": "^2.1.0",
     "terser": "^3.17.0",
     "upath": "^1.1.2"
   },

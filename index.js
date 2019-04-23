@@ -3,27 +3,39 @@
 'use strict';
 
 const fs = require('fs');
-const path = require('path');
 const meow = require('meow');
 const ora = require('ora');
 const globby = require('globby');
+const makeDir = require('make-dir');
+const hasExt = require('has-ext');
 const upath = require('upath');
+const pAll = require('p-all');
 const {minify} = require('html-minifier');
 const CleanCSS = require('clean-css');
 const Terser = require('terser');
+const imagemin = require('imagemin');
+const imageminMozjpeg = require('imagemin-mozjpeg');
+const imageminPngquant = require('imagemin-pngquant');
+const imageminSvgo = require('imagemin-svgo');
 
 const cli = meow(`
     Usage
       $ minifly <options>
  
-    Options
+		Options
+			--output, -o  Output directory [default: minifly]
       --ignore, -i  Ignore specific files or directories
  
     Examples
       $ minifly
-	  $ minifly --ignore 'index.js,dist/*.css'
+	  	$ minifly --ignore 'index.js,dist/*.css' -o dist
 `, {
 	flags: {
+		output: {
+			type: 'string',
+			alias: 'o',
+			default: 'minifly'
+		},
 		ignore: {
 			type: 'string',
 			alias: 'i'
@@ -36,9 +48,9 @@ const cli = meow(`
 
 	await globby(['*', '{,!(node_modules)/**/}', '!*.min.*', `!{${cli.flags.ignore}}`]).then(async files => {
 		const minifyHtml = async () => {
-			const html = await files.filter(name => path.extname(name).substr(1) === 'html');
+			const html = await files.filter(name => hasExt(name, 'html'));
 
-			html.map(async file => {
+			await html.map(async file => {
 				const contents = await fs.readFileSync(file, 'utf8');
 
 				if (contents === '') {
@@ -58,7 +70,10 @@ const cli = meow(`
 					minifyURLs: true
 				});
 
-				fs.writeFile(upath.changeExt(file, '.min.html'), output, err => {
+				const path = await `${cli.flags.output}/` + file.substring(0, file.lastIndexOf('/'));
+				await makeDir(path);
+
+				fs.writeFile(`${cli.flags.output}/${upath.changeExt(file, '.min.html')}`, output, err => {
 					if (err) {
 						spinner.fail('Error!\n' + err);
 					}
@@ -67,9 +82,9 @@ const cli = meow(`
 		};
 
 		const minifyCss = async () => {
-			const css = await files.filter(name => path.extname(name).substr(1) === 'css');
+			const css = await files.filter(name => hasExt(name, 'css'));
 
-			css.map(async file => {
+			await css.map(async file => {
 				const contents = await fs.readFileSync(file, 'utf8');
 
 				if (contents === '') {
@@ -78,7 +93,10 @@ const cli = meow(`
 
 				const output = await new CleanCSS().minify(contents);
 
-				fs.writeFile(upath.changeExt(file, '.min.css'), output.styles, err => {
+				const path = await `${cli.flags.output}/` + file.substring(0, file.lastIndexOf('/'));
+				await makeDir(path);
+
+				fs.writeFile(`${cli.flags.output}/${upath.changeExt(file, '.min.css')}`, output.styles, err => {
 					if (err) {
 						spinner.fail('Error!\n' + err);
 					}
@@ -87,9 +105,9 @@ const cli = meow(`
 		};
 
 		const minifyJs = async () => {
-			const js = await files.filter(name => path.extname(name).substr(1) === 'js');
+			const js = await files.filter(name => hasExt(name, 'js'));
 
-			js.map(async file => {
+			await js.map(async file => {
 				const contents = await fs.readFileSync(file, 'utf8');
 
 				if (contents === '') {
@@ -111,7 +129,10 @@ const cli = meow(`
 					}
 				});
 
-				fs.writeFile(upath.changeExt(file, '.min.js'), output.code, err => {
+				const path = await `${cli.flags.output}/` + file.substring(0, file.lastIndexOf('/'));
+				await makeDir(path);
+
+				fs.writeFile(`${cli.flags.output}/${upath.changeExt(file, '.min.js')}`, output.code, err => {
 					if (err) {
 						spinner.fail('Error!\n' + err);
 					}
@@ -119,7 +140,26 @@ const cli = meow(`
 			});
 		};
 
-		Promise.all([minifyHtml(), minifyCss(), minifyJs()]).then(() => {
+		const minifyImages = async () => {
+			const images = await files.filter(name => hasExt(name, ['jpg', 'png', 'svg']));
+
+			await imagemin(images, `${cli.flags.output}/images`, {
+				plugins: [
+					imageminMozjpeg(),
+					imageminPngquant(),
+					imageminSvgo()
+				]
+			});
+		};
+
+		const actions = [
+			() => minifyHtml(),
+			() => minifyCss(),
+			() => minifyJs(),
+			() => minifyImages()
+		];
+
+		await pAll(actions, {concurrency: 4}).then(() => {
 			spinner.succeed('Done!');
 		});
 	}).catch(error => {
