@@ -2,6 +2,7 @@
 
 'use strict';
 
+const os = require('os');
 const fs = require('fs');
 const meow = require('meow');
 const ora = require('ora');
@@ -23,8 +24,9 @@ const cli = meow(`
       $ minifly <options>
  
 		Options
-			--output, -o  Output directory [default: minifly]
-      --ignore, -i  Ignore specific files or directories
+			--output, -o  			Output directory (Default: minifly)
+			--ignore, -i  			Ignore specific files or directories
+			--concurrency, -c		Max number of minifiers running at the same time (Default: CPU cores)
  
     Examples
       $ minifly
@@ -39,6 +41,10 @@ const cli = meow(`
 		ignore: {
 			type: 'string',
 			alias: 'i'
+		},
+		concurrency: {
+			type: 'string',
+			alias: 'c'
 		}
 	}
 });
@@ -159,7 +165,7 @@ const cli = meow(`
 			() => minifyImages()
 		];
 
-		await pAll(actions, {concurrency: 4}).then(() => {
+		await pAll(actions, {concurrency: Number(cli.flags.concurrency) || os.cpus().length}).then(() => {
 			spinner.succeed('Done!');
 		});
 	}).catch(error => {
