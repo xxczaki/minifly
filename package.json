@@ -1,6 +1,6 @@
 {
   "name": "minifly",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "🗜️ Minify different types of files easily",
   "main": "index.js",
   "files": [
@@ -10,7 +10,7 @@
     "minifly": "index.js"
   },
   "scripts": {
-    "test": "xo"
+    "test": "xo && ava"
   },
   "keywords": [
     "minifly",
@@ -56,6 +56,9 @@
     "upath": "^1.1.2"
   },
   "devDependencies": {
+    "ava": "^1.4.1",
+    "del": "^4.1.0",
+    "execa": "^1.0.0",
     "xo": "*"
   }
 }

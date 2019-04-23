@@ -61,4 +61,4 @@ typings/
 .next
 
 # minifly directory
-test/fixtures
+minifly
