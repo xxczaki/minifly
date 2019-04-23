@@ -1,6 +1,6 @@
 {
   "name": "minifly",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "🗜️ Minify different types of files easily",
   "main": "index.js",
   "files": [
