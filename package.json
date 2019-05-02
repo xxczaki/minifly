@@ -1,6 +1,6 @@
 {
   "name": "minifly",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "🗜️ Minify different types of files easily",
   "main": "index.js",
   "files": [
@@ -57,8 +57,13 @@
   },
   "devDependencies": {
     "ava": "^1.4.1",
-    "del": "^4.1.0",
+    "del": "^4.1.1",
     "execa": "^1.0.0",
     "xo": "*"
+  },
+  "xo": {
+    "rules": {
+      "max-nested-callbacks": "off"
+    }
   }
 }
