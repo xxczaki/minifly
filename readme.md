@@ -26,15 +26,17 @@ npx minifly
 # Usage
 
 ```bash
-Usage
-    $ minifly <options>
+    Usage
+        $ minifly <options>
  
-Options
-    --ignore, -i  Ignore specific files or directories
+	Options
+	    --output, -o  			Output directory (Default: minifly)
+		--ignore, -i  			Ignore specific files or directories
+		--concurrency, -c		Max number of minifiers running at the same time (Default: CPU cores)
  
-Examples
-    $ minifly
-	$ minifly --ignore 'index.js,dist/*.css'
+    Examples
+        $ minifly
+	  	$ minifly --ignore 'index.js,dist/*.css' -o dist
 ```
 
 ## Supported files
