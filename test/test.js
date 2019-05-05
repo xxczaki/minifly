@@ -12,7 +12,7 @@ test('help message', async t => {
 });
 
 test('outputs minified files in correct directory', async t => {
-	await execa.shell('node index.js --ignore test.js').then(async () => {
+	await execa.shell('node index.js').then(async () => {
 		await globby(['minifly']).then(files => {
 			const array = [
 				'minifly/index.min.js',
