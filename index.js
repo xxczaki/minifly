@@ -3,7 +3,7 @@
 'use strict';
 
 const os = require('os');
-const fs = require('fs');
+const fs = require('fs').promises;
 const meow = require('meow');
 const ora = require('ora');
 const globby = require('globby');
@@ -57,7 +57,7 @@ const cli = meow(`
 			const html = await files.filter(name => hasExt(name, 'html'));
 
 			await html.map(async file => {
-				const contents = await fs.readFileSync(file, 'utf8');
+				const contents = await fs.readFile(file, 'utf8');
 
 				if (contents === '') {
 					return;
@@ -79,7 +79,7 @@ const cli = meow(`
 				const path = await `${cli.flags.output}/` + file.substring(0, file.lastIndexOf('/'));
 				await makeDir(path);
 
-				fs.writeFile(`${cli.flags.output}/${upath.changeExt(file, '.min.html')}`, output, err => {
+				fs.writeFile(`${cli.flags.output}/${upath.changeExt(file, '.min.html')}`, output).catch(err => {
 					if (err) {
 						spinner.fail('Error!\n' + err);
 					}
@@ -91,7 +91,7 @@ const cli = meow(`
 			const css = await files.filter(name => hasExt(name, 'css'));
 
 			await css.map(async file => {
-				const contents = await fs.readFileSync(file, 'utf8');
+				const contents = await fs.readFile(file, 'utf8');
 
 				if (contents === '') {
 					return;
@@ -102,7 +102,7 @@ const cli = meow(`
 				const path = await `${cli.flags.output}/` + file.substring(0, file.lastIndexOf('/'));
 				await makeDir(path);
 
-				fs.writeFile(`${cli.flags.output}/${upath.changeExt(file, '.min.css')}`, output.styles, err => {
+				fs.writeFile(`${cli.flags.output}/${upath.changeExt(file, '.min.css')}`, output.styles).catch(err => {
 					if (err) {
 						spinner.fail('Error!\n' + err);
 					}
@@ -114,7 +114,7 @@ const cli = meow(`
 			const js = await files.filter(name => hasExt(name, 'js'));
 
 			await js.map(async file => {
-				const contents = await fs.readFileSync(file, 'utf8');
+				const contents = await fs.readFile(file, 'utf8');
 
 				if (contents === '') {
 					return;
@@ -138,7 +138,7 @@ const cli = meow(`
 				const path = await `${cli.flags.output}/` + file.substring(0, file.lastIndexOf('/'));
 				await makeDir(path);
 
-				fs.writeFile(`${cli.flags.output}/${upath.changeExt(file, '.min.js')}`, output.code, err => {
+				fs.writeFile(`${cli.flags.output}/${upath.changeExt(file, '.min.js')}`, output.code).catch(err => {
 					if (err) {
 						spinner.fail('Error!\n' + err);
 					}
