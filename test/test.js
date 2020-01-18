@@ -7,23 +7,24 @@ import del from 'del';
 del('minifly');
 
 test('help message', async t => {
-	const ret = await execa.shell('node index.js --help');
+	const ret = await execa('./index.js', ['--help']);
 	t.regex(ret.stdout, /Examples/);
 });
 
 test('outputs minified files in correct directory', async t => {
-	await execa.shell('node index.js').then(async () => {
+	process.chdir('./test/fixtures');
+	await execa('../../index.js').then(async () => {
 		await globby(['minifly']).then(files => {
 			const array = [
-				'minifly/index.min.js',
+				'minifly/example.min.css',
+				'minifly/example.min.html',
+				'minifly/example.min.js',
+				'minifly/images/example.gif',
 				'minifly/images/example.jpg',
 				'minifly/images/example.png',
-				'minifly/images/example.svg',
-				'minifly/test/test.min.js',
-				'minifly/test/fixtures/example.min.css',
-				'minifly/test/fixtures/example.min.html',
-				'minifly/test/fixtures/example.min.js'
+				'minifly/images/example.svg'
 			];
+
 			t.deepEqual(files, array);
 		});
 	});
