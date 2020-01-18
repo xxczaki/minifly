@@ -36,7 +36,7 @@ npx minifly
 		--concurrency, -c		Max number of minifiers running at the same time (Default: CPU cores)
  
 	Examples
-    		$ minifly
+    	$ minifly
 	  	$ minifly -i 'index.js,dist/*.css' -o dist
 		$ minifly -m ''
 ```
@@ -50,6 +50,7 @@ npx minifly
 | JavaScript (*.js)   | [terser](https://github.com/terser-js/terser)  |
 | JPG (*.jpg)   | [imagemin-mozjpeg](https://github.com/imagemin/imagemin-mozjpeg)  |
 | PNG (*.png)   | [imagemin-pngquant](https://github.com/imagemin/imagemin-pngquant)  |
+| GIF (*.gif)   | [imagemin-gifsicle](https://github.com/imagemin/imagemin-gifsicle)  |
 | SVG (*.svg)   | [imagemin-svgo](https://github.com/imagemin/imagemin-svgo)  |
 
 More file types will be supported soon :unicorn:
