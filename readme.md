@@ -35,8 +35,8 @@ npx minifly
 		--minExt, -m			File extensions of minified files (Default: .min)
 		--concurrency, -c		Max number of minifiers running at the same time (Default: CPU cores)
  
-    Examples
-    	$ minifly
+	Examples
+    		$ minifly
 	  	$ minifly -i 'index.js,dist/*.css' -o dist
 		$ minifly -m ''
 ```
