@@ -20,17 +20,19 @@ const imageminPngquant = require('imagemin-pngquant');
 const imageminSvgo = require('imagemin-svgo');
 
 const cli = meow(`
-    Usage
-      $ minifly <options>
+	Usage
+		$ minifly <options>
  
-		Options
-			--output, -o  			Output directory (Default: minifly)
-			--ignore, -i  			Ignore specific files or directories
-			--concurrency, -c		Max number of minifiers running at the same time (Default: CPU cores)
+	Options
+		--output, -o  			Output directory (Default: minifly)
+		--ignore, -i  			Ignore specific files or directories
+		--minExt, -m			File extensions of minified files (Default: .min)
+		--concurrency, -c		Max number of minifiers running at the same time (Default: CPU cores)
  
-    Examples
-      $ minifly
-	  	$ minifly --ignore 'index.js,dist/*.css' -o dist
+	Examples
+    		$ minifly
+	  	$ minifly -i 'index.js,dist/*.css' -o dist
+		$ minifly -m ''
 `, {
 	flags: {
 		output: {
@@ -41,6 +43,11 @@ const cli = meow(`
 		ignore: {
 			type: 'string',
 			alias: 'i'
+		},
+		minExt: {
+			type: 'string',
+			alias: 'm',
+			default: 'min'
 		},
 		concurrency: {
 			type: 'string',
@@ -79,7 +86,7 @@ const cli = meow(`
 				const path = await `${cli.flags.output}/` + file.substring(0, file.lastIndexOf('/'));
 				await makeDir(path);
 
-				fs.writeFile(`${cli.flags.output}/${upath.changeExt(file, '.min.html')}`, output).catch(err => {
+				fs.writeFile(`${cli.flags.output}/${upath.changeExt(file, `${cli.flags.minExt}.html`)}`, output).catch(err => {
 					if (err) {
 						spinner.fail('Error!\n' + err);
 					}
@@ -102,7 +109,7 @@ const cli = meow(`
 				const path = await `${cli.flags.output}/` + file.substring(0, file.lastIndexOf('/'));
 				await makeDir(path);
 
-				fs.writeFile(`${cli.flags.output}/${upath.changeExt(file, '.min.css')}`, output.styles).catch(err => {
+				fs.writeFile(`${cli.flags.output}/${upath.changeExt(file, `${cli.flags.minExt}.css`)}`, output.styles).catch(err => {
 					if (err) {
 						spinner.fail('Error!\n' + err);
 					}
@@ -138,7 +145,7 @@ const cli = meow(`
 				const path = await `${cli.flags.output}/` + file.substring(0, file.lastIndexOf('/'));
 				await makeDir(path);
 
-				fs.writeFile(`${cli.flags.output}/${upath.changeExt(file, '.min.js')}`, output.code).catch(err => {
+				fs.writeFile(`${cli.flags.output}/${upath.changeExt(file, `${cli.flags.minExt}.js`)}`, output.code).catch(err => {
 					if (err) {
 						spinner.fail('Error!\n' + err);
 					}
