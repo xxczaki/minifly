@@ -17,6 +17,7 @@ const Terser = require('terser');
 const imagemin = require('imagemin');
 const imageminMozjpeg = require('imagemin-mozjpeg');
 const imageminPngquant = require('imagemin-pngquant');
+const imageminGifsicle = require('imagemin-gifsicle');
 const imageminSvgo = require('imagemin-svgo');
 
 const cli = meow(`
@@ -30,9 +31,9 @@ const cli = meow(`
 		--concurrency, -c		Max number of minifiers running at the same time (Default: CPU cores)
  
 	Examples
-    		$ minifly
+    	$ minifly
 	  	$ minifly -i 'index.js,dist/*.css' -o dist
-		$ minifly -m ''
+		$ minifly --minExt ''
 `, {
 	flags: {
 		output: {
@@ -60,6 +61,8 @@ const cli = meow(`
 	const spinner = ora('Minifying...').start();
 
 	await globby(['*', '{,!(node_modules)/**/}', '!*.min.*', `!{${cli.flags.ignore}}`]).then(async files => {
+		await makeDir(cli.flags.output);
+
 		const minifyHtml = async () => {
 			const html = await files.filter(name => hasExt(name, 'html'));
 
@@ -83,7 +86,7 @@ const cli = meow(`
 					minifyURLs: true
 				});
 
-				const path = await `${cli.flags.output}/` + file.substring(0, file.lastIndexOf('/'));
+				const path = `${cli.flags.output}/` + file.slice(-1, file.lastIndexOf('/'));
 				await makeDir(path);
 
 				fs.writeFile(`${cli.flags.output}/${upath.changeExt(file, `${cli.flags.minExt}.html`)}`, output).catch(err => {
@@ -106,7 +109,7 @@ const cli = meow(`
 
 				const output = await new CleanCSS().minify(contents);
 
-				const path = await `${cli.flags.output}/` + file.substring(0, file.lastIndexOf('/'));
+				const path = `${cli.flags.output}/` + file.slice(-1, file.lastIndexOf('/'));
 				await makeDir(path);
 
 				fs.writeFile(`${cli.flags.output}/${upath.changeExt(file, `${cli.flags.minExt}.css`)}`, output.styles).catch(err => {
@@ -142,7 +145,7 @@ const cli = meow(`
 					}
 				});
 
-				const path = await `${cli.flags.output}/` + file.substring(0, file.lastIndexOf('/'));
+				const path = `${cli.flags.output}/` + file.slice(-1, file.lastIndexOf('/'));
 				await makeDir(path);
 
 				fs.writeFile(`${cli.flags.output}/${upath.changeExt(file, `${cli.flags.minExt}.js`)}`, output.code).catch(err => {
@@ -154,12 +157,14 @@ const cli = meow(`
 		};
 
 		const minifyImages = async () => {
-			const images = await files.filter(name => hasExt(name, ['jpg', 'png', 'svg']));
+			const images = await files.filter(name => hasExt(name, ['jpg', 'png', 'svg', 'gif']));
 
-			await imagemin(images, `${cli.flags.output}/images`, {
+			await imagemin(images, {
+				destination: `${cli.flags.output}/images`,
 				plugins: [
 					imageminMozjpeg(),
 					imageminPngquant(),
+					imageminGifsicle(),
 					imageminSvgo()
 				]
 			});
