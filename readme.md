@@ -27,7 +27,7 @@ npx minifly
 
 ```bash
 	Usage
-	$ minifly <options>
+		$ minifly <options>
  
 	Options
 		--output, -o  			Output directory (Default: minifly)
